@@ -1,10 +1,33 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { TemplatesModule } from './templates/templates.module';
+import { InvitationsModule } from './invitations/invitations.module';
+import { RsvpModule } from './rsvp/rsvp.module';
+import { PaymentsModule } from './payments/payments.module';
+import { databaseConfig } from './config/database.config';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: databaseConfig,
+      inject: [ConfigService],
+    }),
+    AuthModule,
+    UsersModule,
+    TemplatesModule,
+    InvitationsModule,
+    RsvpModule,
+    PaymentsModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
