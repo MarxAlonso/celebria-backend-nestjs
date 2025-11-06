@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Invitation } from '../database/entities/invitation.entity';
 import { Guest } from '../database/entities/guest.entity';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class InvitationsService {
@@ -11,6 +12,7 @@ export class InvitationsService {
     private invitationRepository: Repository<Invitation>,
     @InjectRepository(Guest)
     private guestRepository: Repository<Guest>,
+    private emailService: EmailService,
   ) {}
 
   async findAll(): Promise<Invitation[]> {
@@ -32,7 +34,19 @@ export class InvitationsService {
 
   async create(invitationData: Partial<Invitation>): Promise<Invitation> {
     const invitation = this.invitationRepository.create(invitationData);
-    return this.invitationRepository.save(invitation);
+    const savedInvitation = await this.invitationRepository.save(invitation);
+    
+    // Send invitation email
+    if (invitationData.email) {
+      const invitationLink = `${process.env.FRONTEND_URL}/invitations/${savedInvitation.id}`;
+      await this.emailService.sendInvitationEmail(
+        invitationData.email,
+        invitationData.event?.name || 'Evento',
+        invitationLink
+      );
+    }
+    
+    return savedInvitation;
   }
 
   async update(id: string, invitationData: Partial<Invitation>): Promise<Invitation> {

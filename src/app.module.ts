@@ -7,6 +7,7 @@ import { TemplatesModule } from './templates/templates.module';
 import { InvitationsModule } from './invitations/invitations.module';
 import { RsvpModule } from './rsvp/rsvp.module';
 import { PaymentsModule } from './payments/payments.module';
+import { EmailModule } from './email/email.module';
 import { databaseConfig } from './config/database.config';
 
 @Module({
@@ -26,6 +27,7 @@ import { databaseConfig } from './config/database.config';
     InvitationsModule,
     RsvpModule,
     PaymentsModule,
+    EmailModule,
   ],
   controllers: [],
   providers: [],
