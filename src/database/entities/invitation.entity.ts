@@ -11,6 +11,7 @@ import {
 import { User } from './user.entity';
 import { Event } from './event.entity';
 import { Guest } from './guest.entity';
+import { Template } from './template.entity';
 
 export enum InvitationStatus {
   DRAFT = 'draft',
@@ -60,7 +61,7 @@ export class Invitation {
   @Column({ type: 'uuid', nullable: true })
   templateId?: string;
 
-  @ManyToOne(() => Template)
+  @ManyToOne(() => Template, { nullable: true })
   @JoinColumn({ name: 'templateId' })
   template?: Template;
 

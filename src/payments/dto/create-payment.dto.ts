@@ -1,6 +1,6 @@
 import { IsEnum, IsNumber, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { PaymentMethod, PaymentStatus } from '../database/entities/payment.entity';
+import { PaymentMethod, PaymentStatus } from '../../database/entities/payment.entity';
 
 export class CreatePaymentDto {
   @ApiProperty({ description: 'User ID' })

@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional, IsString, IsUUID } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { RsvpStatus } from '../database/entities/rsvp.entity';
+import { RsvpStatus } from '../../database/entities/rsvp.entity';
 
 export class CreateRsvpDto {
   @ApiProperty({ description: 'Guest ID' })

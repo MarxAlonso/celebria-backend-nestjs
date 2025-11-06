@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Invitation } from '../database/entities/invitation.entity';
 
 @Injectable()
 export class EmailService {
@@ -55,5 +56,17 @@ export class EmailService {
     `;
     
     return this.sendEmail(to, subject, content);
+  }
+
+  // Envía invitación (placeholder). Reemplazar por SendGrid / nodemailer en producción.
+  async sendInvitation(to: string, eventName: string, invitation: Invitation): Promise<void> {
+    // Aquí puedes integrar un proveedor real (SendGrid, SES, nodemailer, etc.)
+    // Por ahora solo log para desarrollo/local:
+    console.log('=== Enviando invitación (placeholder) ===');
+    console.log(`Para: ${to}`);
+    console.log(`Evento: ${eventName}`);
+    console.log('Invitación:', invitation);
+    console.log('=========================================');
+    return;
   }
 }

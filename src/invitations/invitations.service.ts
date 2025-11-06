@@ -37,12 +37,12 @@ export class InvitationsService {
     const savedInvitation = await this.invitationRepository.save(invitation);
     
     // Send invitation email
-    if (invitationData.email) {
-      const invitationLink = `${process.env.FRONTEND_URL}/invitations/${savedInvitation.id}`;
-      await this.emailService.sendInvitationEmail(
-        invitationData.email,
-        invitationData.event?.name || 'Evento',
-        invitationLink
+    const invAny = invitationData as any;
+    if (invAny.email) {
+      await this.emailService.sendInvitation(
+        invAny.email,
+        invAny.event?.name || 'Evento',
+        savedInvitation,
       );
     }
     
