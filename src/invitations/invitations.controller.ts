@@ -48,7 +48,7 @@ export class InvitationsController {
   @ApiOperation({ summary: 'Get my invitations (organizer only)' })
   @ApiResponse({ status: 200, description: 'Invitations retrieved successfully' })
   findMine(@Request() req: any) {
-    const organizerId: string = req.user?.sub;
+    const organizerId: string = req.user?.userId;
     return this.invitationsService.findMy(organizerId);
   }
 
