@@ -56,6 +56,23 @@ export class Template {
     };
     layout: string;
     customCss?: string;
+    pages?: Array<{
+      background?: { type: 'color' | 'image'; value: string };
+      sections?: Array<{ key: string; text?: string }>;
+      elements?: Array<{
+        id: string;
+        type: 'text' | 'image' | 'shape';
+        content?: string;
+        src?: string;
+        x: number;
+        y: number;
+        width?: number;
+        height?: number;
+        rotation?: number;
+        zIndex?: number;
+        style?: Record<string, string>;
+      }>;
+    }>;
   };
 
   @Column({ type: 'jsonb', nullable: true })
