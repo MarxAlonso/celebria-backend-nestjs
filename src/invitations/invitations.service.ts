@@ -129,4 +129,48 @@ export class InvitationsService {
     });
     return this.guestRepository.save(guest);
   }
+
+  /**
+   * Generate or reuse a unique public slug and return a share URL
+   */
+  async generateUniqueLink(id: string, organizerId: string, frontendBaseUrl: string): Promise<{ link: string; slug: string }> {
+    const invitation = await this.findOne(id);
+    if (invitation.createdById !== organizerId) {
+      throw new ForbiddenException('You cannot share this invitation');
+    }
+    // Reuse existing slug if present; otherwise, generate a random UUID slug
+    const slug = invitation.uniqueLink || (globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`);
+    invitation.uniqueLink = slug;
+    await this.invitationRepository.save(invitation);
+    const link = `${frontendBaseUrl.replace(/\/$/, '')}/invitation/${slug}`;
+    return { link, slug };
+  }
+
+  /**
+   * Find an invitation by its public slug (uniqueLink) with minimal public-safe fields
+   */
+  async findByUniqueLink(slug: string): Promise<any> {
+    const invitation = await this.invitationRepository.findOne({
+      where: { uniqueLink: slug },
+      relations: ['event'],
+    });
+    if (!invitation) {
+      throw new NotFoundException('Invitation not found');
+    }
+    const event = invitation.event;
+    return {
+      id: invitation.id,
+      title: invitation.title,
+      message: invitation.message,
+      customDesign: invitation.customDesign,
+      event: event
+        ? {
+            title: event.title,
+            description: event.description,
+            eventDate: event.eventDate,
+            location: event.location,
+          }
+        : undefined,
+    };
+  }
 }

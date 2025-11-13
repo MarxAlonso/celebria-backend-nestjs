@@ -90,4 +90,16 @@ export class InvitationsController {
   addGuest(@Param('id') id: string, @Body() guestData: any) {
     return this.invitationsService.addGuest(id, guestData);
   }
+
+  @Post(':id/generate-link')
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ORGANIZER)
+  @ApiOperation({ summary: 'Generate a public share link for this invitation' })
+  @ApiResponse({ status: 201, description: 'Share link generated successfully' })
+  generateShareLink(@Param('id') id: string, @Request() req: any) {
+    const organizerId: string = req.user?.userId;
+    const frontendOrigins = (process.env.FRONTEND_ORIGIN || '').split(',').filter(Boolean);
+    const base = (frontendOrigins[0] || process.env.FRONTEND_URL || 'http://localhost:3000').trim();
+    return this.invitationsService.generateUniqueLink(id, organizerId, base);
+  }
 }
