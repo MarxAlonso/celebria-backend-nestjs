@@ -9,7 +9,7 @@ import { Rsvp } from '../database/entities/rsvp.entity';
 import { Payment } from '../database/entities/payment.entity';
 
 export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptions => {
-  const envUrl = configService.get<string>('DATABASE_URL');
+  const envUrl = configService.get<string>('FESTIVIABD_URL');
   const nodeEnv = configService.get<string>('NODE_ENV');
   const isProd = nodeEnv === 'production';
 
@@ -19,10 +19,10 @@ export const databaseConfig = (configService: ConfigService): TypeOrmModuleOptio
     );
   }
 
-  const databaseUrl = envUrl || 'postgresql://neondb_owner:npg_ha70foLZcNGi@ep-damp-cloud-ahb1flsa-pooler.c-3.us-east-1.aws.neon.tech/festivia?sslmode=require';
+  const databaseUrl = envUrl;
 
   if (databaseUrl) {
-    console.log('DATABASE_URL =>', databaseUrl);
+    console.log('FESTIVIABD_URL =>', databaseUrl);
     return {
       type: 'postgres',
       url: databaseUrl,
