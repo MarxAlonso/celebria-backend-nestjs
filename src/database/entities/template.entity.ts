@@ -61,7 +61,7 @@ export class Template {
       sections?: Array<{ key: string; text?: string }>;
       elements?: Array<{
         id: string;
-        type: 'text' | 'image' | 'shape' | 'countdown';
+        type: 'text' | 'image' | 'shape' | 'countdown' | 'map';
         content?: string;
         src?: string;
         x: number;
@@ -72,6 +72,7 @@ export class Template {
         zIndex?: number;
         style?: Record<string, string>;
         countdown?: { source: 'event' | 'custom'; dateISO?: string };
+        map?: { source: 'event' | 'custom'; query?: string; url?: string };
       }>;
     }>;
   };
